@@ -1,0 +1,54 @@
+* name: Auto Deploy Real Estate App
+  hosts: servers
+  become: true
+
+  vars:
+  app_dir: /home/{{ ansible_user }}/real-estate-app
+
+  tasks:
+
+  * name: Update system
+    apt:
+    update_cache: yes
+
+  * name: Install dependencies
+    apt:
+    name:
+    - docker.io
+    - docker-compose
+    state: present
+
+  * name: Start Docker
+    service:
+    name: docker
+    state: started
+    enabled: true
+
+  * name: Add user to docker group
+    user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+  * name: Create app directory
+    file:
+    path: "{{ app_dir }}"
+    state: directory
+
+  * name: Copy project
+    copy:
+    src: ../
+    dest: "{{ app_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+  * name: Stop old containers
+    command: docker compose down
+    args:
+    chdir: "{{ app_dir }}"
+    ignore_errors: yes
+
+  * name: Build & Run containers
+    command: docker compose up --build -d
+    args:
+    chdir: "{{ app_dir }}"

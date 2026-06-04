@@ -1,0 +1,18 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: #0a0a14;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a14; }
+::-webkit-scrollbar-thumb { background: #e94560; border-radius: 3px; }
+
+input, select, textarea {
+  font-family: 'Sora', sans-serif;
+}
+
+a { text-decoration: none; color: inherit; }
